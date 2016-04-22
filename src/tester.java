@@ -1,9 +1,7 @@
 
 public class tester {
 
-	/**
-	 * @param args
-	 */
+	
 	public static void main(String[] args) {
 		board b = new board();
 		b.print();
@@ -15,6 +13,8 @@ public class tester {
 		b.changeBoard('a');
 		b.print();
 		b.changeBoard('s');
+		b.print();
+		b.changeBoard('w');
 		b.print();
 	}
 

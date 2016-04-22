@@ -42,7 +42,7 @@ public class board {
 		for (int x = 0; x < this.board.length; x++) {
 			System.out.println("---------------------------------");
 			for (int y = 0; y < this.board[0].length; y++) {
-				System.out.print("|   "+this.board[x][y] + "   ");
+				System.out.print("|   "+this.board[x][y] + "   "); //TODO: fix spacing for multiple digits
 			}
 			System.out.println("|");
 		}
@@ -61,7 +61,7 @@ public class board {
 			this.shiftUp();
 			break;
 		case 'a':
-			this.shoftLeft();
+			this.shiftLeft();
 			break;
 		case 's':
 			this.shiftDown();
@@ -86,13 +86,14 @@ public class board {
 		this.board[1][1] = 2;
 		this.board [1][3] = 2;
 		this.board[2][0] = 8;
+		this.board[0][0] = 16;
 	}
 
 	/*
 	 * PRIVATE HELPER METHODS
 	 */
 	private void shiftUp() {
-		// TODO Auto-generated method stub
+		//shift up
 		int tmp; //for traversing 
 		for (int x = this.board.length-1; x > -1; x--) {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
@@ -116,9 +117,43 @@ public class board {
 				}
 			}
 		}
+		
+		//combine
+		for (int x = this.board.length-2; x > -1; x--) {
+			for (int y = this.board[0].length-1; y > -1; y--) {
+				if (this.board[x][y] == this.board[x+1][y]){
+					this.board[x][y] = 0;
+					this.board[x+1][y] *= 2;
+				}		
+			}
+		}
+		//shift up
+		for (int x = this.board.length-1; x > -1; x--) {
+			innercolumn: //naming inner for loop for continue on Array out of bounds catch
+			for (int y = this.board[0].length-1; y > -1; y--) {
+				tmp = 1;
+				if (this.board[x][y] == 0) {
+					continue innercolumn;
+				}
+				try { 
+					while(this.board[x-tmp][y] == 0) {
+						this.board[x-tmp][y] = this.board[x][y];
+						this.board[x][y] = 0;
+						x++;
+					}
+				}
+				catch(ArrayIndexOutOfBoundsException e) { //purposefully tripped 
+					continue innercolumn;
+				}
+				catch(Exception e) { 
+					e.printStackTrace();
+				}
+			}
+		}
+
 
 	}
-	private void shoftLeft() {
+	private void shiftLeft() {
 		int tmp; //for traversing 
 		for (int x = this.board.length-1; x > -1; x--) {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
@@ -151,7 +186,7 @@ public class board {
 				}		
 			}
 		}
-		//shift right
+		//shift left
 		for (int x = this.board.length-1; x > -1; x--) {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
 			for (int y = 0; y < this.board[0].length; y++) {
@@ -198,10 +233,7 @@ public class board {
 					e.printStackTrace();
 				}
 			}
-		}
-		System.out.println("THIS IS THE TMP ONE");
-		this.print();
-		
+		}		
 		//combine
 		for (int x = this.board.length-2; x > -1; x--) {
 			for (int y = this.board[0].length-1; y > -1; y--) {
@@ -211,19 +243,19 @@ public class board {
 				}		
 			}
 		}
-		//shift right
+		//shift down
 		for (int x = this.board.length-1; x > -1; x--) {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
 			for (int y = this.board[0].length-1; y > -1; y--) {
 				tmp = 1;
-				if (this.board[y][x] == 0) {
+				if (this.board[x][y] == 0) {
 					continue innercolumn;
 				}
 				try { 
-					while(this.board[y+tmp][x] == 0) {
-						this.board[y+tmp][x] = this.board[x][y];
-						this.board[y][x] = 0;
-						y++;
+					while(this.board[x+tmp][y] == 0) {
+						this.board[x+tmp][y] = this.board[x][y];
+						this.board[x][y] = 0;
+						x--;
 					}
 				}
 				catch(ArrayIndexOutOfBoundsException e) { //purposefully tripped 
