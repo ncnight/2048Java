@@ -23,31 +23,57 @@ public class board {
 
 	/**
 	 * Prints the board 
+	 * The code is a bit messy 
+	 * TODO: Clean up
+	 * Empty output
 	 * 
-	 * Empty form 
-	 * 
-2048: Enter a direction!
----------------------------------
-|   0   |   0   |   0   |   0   |
----------------------------------
-|   0   |   0   |   0   |   0   |
----------------------------------
-|   0   |   0   |   0   |   0   |
----------------------------------
-|   0   |   0   |   0   |   0   |
----------------------------------
+	 * 2048: Enter a direction!
+	 * --------------------------------------------
+	 * |    0     |    0     |    0     |    0    |
+ 	 * --------------------------------------------
+ 	 * |    0     |    0     |    0     |    0    |
+ 	 * --------------------------------------------
+	 * |    0     |    0     |    0     |    0    |
+	 * --------------------------------------------
+	 * |    0     |    0     |    0     |    0    |
+	 * --------------------------------------------
 	 */
 	public void print(){
+		
+		System.out.print("\n\n"); //spacing after last board
+		int len = this.board.length; //How far the horizontal borders should go
+		String s = ""; //Printed for each square
 		System.out.println("2048: Enter a direction!");
-		for (int x = 0; x < this.board.length; x++) {
-			System.out.println("---------------------------------");
-			for (int y = 0; y < this.board[0].length; y++) {
-				System.out.print("|   "+this.board[x][y] + "   "); //TODO: fix spacing for multiple digits
+		for (int x = 0; x < this.board.length; x++) { //for each horizontal row
+			System.out.print(" "); 
+			for (int i = 0; i < len; i++) { //prints a border one top of the current row
+				System.out.print("-----------");
 			}
-			System.out.println("|");
+			System.out.println(); //next line
+			for (int y = 0; y < this.board[0].length; y++) { //For each column in the current row
+				s = Integer.toString(this.board[x][y]); 
+				for (int i = 8; i > s.length(); i-- ) { //add spacing to the right side - accounts for different sized digits
+					s+= " ";
+				}
+				System.out.print(" |    "+ s);
+			}
+			System.out.println("|"); //the last one vertical border of the current row
 		}
-		System.out.println("---------------------------------");
+		System.out.print(" "); //end space 
+		for (int i = 0; i < len; i++) { //last border on the bottom
+			System.out.print("-----------");
+		}
+		System.out.println(); //ready for input
 	}
+	
+	public static String padRight(String s, int n) {
+	     return String.format("%1$-" + n + "s", s);  
+	}
+
+	public static String padLeft(String s, int n) {
+	    return String.format("%1$" + n + "s", s);  
+	}
+
 	
 	/**
 	 * Shifts the board in the given direction 
