@@ -2,6 +2,17 @@ import java.util.Random;
 
 
 public class board {
+	//COLORS
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BLACK = "\u001B[30m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_PURPLE = "\u001B[35m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
+
 	//Member variables
 	private int[][] board;
 	
@@ -44,11 +55,11 @@ public class board {
 		System.out.print("\n\n"); //spacing after last board
 		int len = this.board.length; //How far the horizontal borders should go
 		String s = ""; //Printed for each square
-		System.out.println("2048: Enter a direction!");
+		System.out.println(ANSI_YELLOW + "2048: Enter a direction!" + ANSI_RESET);
 		for (int x = 0; x < this.board.length; x++) { //for each horizontal row
 			System.out.print(" "); 
 			for (int i = 0; i < len; i++) { //prints a border one top of the current row
-				System.out.print("-----------");
+				System.out.print(ANSI_BLUE+"-----------"+ANSI_RESET);
 			}
 			System.out.println(); //next line
 			for (int y = 0; y < this.board[0].length; y++) { //For each column in the current row
@@ -56,13 +67,14 @@ public class board {
 				for (int i = 8; i > s.length(); i-- ) { //add spacing to the right side - accounts for different sized digits
 					s+= " ";
 				}
-				System.out.print(" |    "+ s);
+				s = ANSI_RED + s + ANSI_RESET;
+				System.out.print(ANSI_BLUE + " |    "+ s);
 			}
-			System.out.println("|"); //the last one vertical border of the current row
+			System.out.println(ANSI_BLUE + "|" + ANSI_RESET); //the last one vertical border of the current row
 		}
 		System.out.print(" "); //end space 
 		for (int i = 0; i < len; i++) { //last border on the bottom
-			System.out.print("-----------");
+			System.out.print(ANSI_BLUE + "-----------" + ANSI_RESET);
 		}
 		System.out.println(); //ready for input
 	}
