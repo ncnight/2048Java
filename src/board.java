@@ -79,12 +79,14 @@ public class board {
 		System.out.println(); //ready for input
 	}
 	
-	public static String padRight(String s, int n) {
-	     return String.format("%1$-" + n + "s", s);  
-	}
-
-	public static String padLeft(String s, int n) {
-	    return String.format("%1$" + n + "s", s);  
+	public int getTotal() {
+		int total = 0;
+		for (int x = 0; x < this.board.length; x++) {
+			for (int y = 0; y < this.board[x].length; y++) {
+				total+= this.board[x][y];
+			}
+		}
+		return total;
 	}
 
 	/**
@@ -92,28 +94,26 @@ public class board {
 	 * 
 	 * @param char d - directions w,a,s,d
 	 */
-	public void changeBoard(char d){
+	public boolean changeBoard(char d) throws IllegalArgumentException{
+		boolean shifted = false;
 		switch(d) {
 		
 		case 'w':
-			this.shiftUp();
+			shifted = this.shiftUp();
 			break;
 		case 'a':
-			this.shiftLeft();
+			shifted = this.shiftLeft();
 			break;
 		case 's':
-			this.shiftDown();
+			shifted = this.shiftDown();
 			break;
 		case 'd':
-			this.shiftRight();
+			shifted = this.shiftRight();
 			break;
+		default:
+			throw new IllegalArgumentException();
 		}
-			
-//				for (int x = 0; x < this.board.length; x++) {
-//					for (int y = 0; y < this.board[0].length; y++) {
-//						
-//					}
-//				}
+		return shifted;
 	}
 	
 	/**
@@ -143,14 +143,15 @@ public class board {
 	/*
 	 * PRIVATE HELPER METHODS
 	 */
-	private void shiftUp() {
+	private boolean shiftUp() {
+		boolean shifted = false;
 		//shift up
 		int tmp; //for traversing 
 		for (int x = this.board.length-1; x > -1; x--) {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
 			for (int y = this.board[0].length-1; y > -1; y--) {
 				tmp = 1;
-				if (this.board[x][y] == 0) {
+				if (x <= -1 || this.board[x][y] == 0) {
 					continue innercolumn;
 				}
 				try { 
@@ -158,6 +159,7 @@ public class board {
 						this.board[x-tmp][y] = this.board[x][y];
 						this.board[x][y] = 0;
 						x++;
+						shifted = true;
 					}
 				}
 				catch(ArrayIndexOutOfBoundsException e) { //purposefully tripped 
@@ -175,6 +177,7 @@ public class board {
 				if (this.board[x][y] == this.board[x+1][y]){
 					this.board[x][y] = 0;
 					this.board[x+1][y] *= 2;
+					shifted = true;
 				}		
 			}
 		}
@@ -183,7 +186,7 @@ public class board {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
 			for (int y = this.board[0].length-1; y > -1; y--) {
 				tmp = 1;
-				if (this.board[x][y] == 0) {
+				if (x <= -1 || this.board[x][y] == 0) {
 					continue innercolumn;
 				}
 				try { 
@@ -191,6 +194,7 @@ public class board {
 						this.board[x-tmp][y] = this.board[x][y];
 						this.board[x][y] = 0;
 						x++;
+						shifted = true;
 					}
 				}
 				catch(ArrayIndexOutOfBoundsException e) { //purposefully tripped 
@@ -201,10 +205,10 @@ public class board {
 				}
 			}
 		}
-
-
+		return shifted;
 	}
-	private void shiftLeft() {
+	private boolean shiftLeft() {
+		boolean shifted = false;
 		int tmp; //for traversing 
 		for (int x = this.board.length-1; x > -1; x--) {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
@@ -218,6 +222,7 @@ public class board {
 						this.board[x][y-tmp] = this.board[x][y];
 						this.board[x][y] = 0;
 						y--;
+						shifted = true;
 					}
 				}
 				catch(ArrayIndexOutOfBoundsException e) { //purposefully tripped 
@@ -234,6 +239,7 @@ public class board {
 				if (this.board[x][y] == this.board[x][y+1]){
 					this.board[x][y] = 0;
 					this.board[x][y+1] *= 2;
+					shifted = true;
 				}		
 			}
 		}
@@ -250,6 +256,7 @@ public class board {
 						this.board[x][y-tmp] = this.board[x][y];
 						this.board[x][y] = 0;
 						y--;
+						shifted = true;
 					}
 				}
 				catch(ArrayIndexOutOfBoundsException e) { //purposefully tripped 
@@ -260,14 +267,16 @@ public class board {
 				}
 			}
 		}
+		return shifted;
 	}
-	private void shiftDown() {
+	private boolean shiftDown() {
+		boolean shifted = false;
 		int tmp; //for traversing 
 		for (int x = this.board.length-1; x > -1; x--) {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
 			for (int y = this.board[0].length-1; y > -1; y--) {
 				tmp = 1;
-				if (this.board[x][y] == 0) {
+				if ( x <= -1 || this.board[x][y] == 0) {
 					continue innercolumn;
 				}
 				try { 
@@ -275,6 +284,7 @@ public class board {
 						this.board[x+tmp][y] = this.board[x][y];
 						this.board[x][y] = 0;
 						x--;
+						shifted = true;
 					}
 				}
 				catch(ArrayIndexOutOfBoundsException e) { //purposefully tripped 
@@ -291,6 +301,7 @@ public class board {
 				if (this.board[x][y] == this.board[x+1][y]){
 					this.board[x][y] = 0;
 					this.board[x+1][y] *= 2;
+					shifted = true;
 				}		
 			}
 		}
@@ -299,12 +310,13 @@ public class board {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
 			for (int y = this.board[0].length-1; y > -1; y--) {
 				tmp = 1;
-				if (this.board[x][y] == 0) {
+				if (x <= -1 || this.board[x][y] == 0) {
 					continue innercolumn;
 				}
 				try { 
 					while(this.board[x+tmp][y] == 0) {
 						this.board[x+tmp][y] = this.board[x][y];
+						shifted = true;
 						this.board[x][y] = 0;
 						x--;
 					}
@@ -317,9 +329,11 @@ public class board {
 				}
 			}
 		}
+		return shifted;
 		
 	}
-	private void shiftRight(){
+	private boolean shiftRight(){
+		boolean shifted = false;
 		int tmp; //for traversing 
 		for (int x = this.board.length-1; x > -1; x--) {
 			innercolumn: //naming inner for loop for continue on Array out of bounds catch
@@ -331,6 +345,7 @@ public class board {
 				try { 
 					while(this.board[x][y+tmp] == 0) {
 						this.board[x][y+tmp] = this.board[x][y];
+						shifted = true;
 						this.board[x][y] = 0;
 						y++;
 					}
@@ -350,6 +365,7 @@ public class board {
 				if (this.board[x][y] == this.board[x][y+1]){
 					this.board[x][y] = 0;
 					this.board[x][y+1] *= 2;
+					shifted = true;
 				}		
 			}
 		}
@@ -366,6 +382,7 @@ public class board {
 						this.board[x][y+tmp] = this.board[x][y];
 						this.board[x][y] = 0;
 						y++;
+						shifted = true;
 					}
 				}
 				catch(ArrayIndexOutOfBoundsException e) { //purposefully tripped 
@@ -376,5 +393,7 @@ public class board {
 				}
 			}
 		}
+		return shifted;
 	}
+
 }
