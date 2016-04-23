@@ -1,8 +1,9 @@
+import java.util.Random;
+
 
 public class board {
-	
-	
-	public int[][] board;
+	//Member variables
+	private int[][] board;
 	
 	/**
 	 * custom constructor
@@ -74,7 +75,6 @@ public class board {
 	    return String.format("%1$" + n + "s", s);  
 	}
 
-	
 	/**
 	 * Shifts the board in the given direction 
 	 * 
@@ -103,16 +103,29 @@ public class board {
 //					}
 //				}
 	}
+	
 	/**
 	 * Randomly generates a 2 or 4 on the gameboard
 	 */
 	public void generateNum() {
-		this.board[1][2] = 2;
-		this.board[1][0] = 2;
-		this.board[1][1] = 2;
-		this.board [1][3] = 2;
-		this.board[2][0] = 8;
-		this.board[0][0] = 16;
+		Random rd = new Random();
+		//Two random ints
+		int x = rd.nextInt(this.board.length);
+		int y = rd.nextInt(this.board[0].length);
+		
+		while(this.board[x][y] != 0) {
+			x = rd.nextInt(this.board.length);
+			y = rd.nextInt(this.board[0].length);
+		}
+		
+		int prob = rd.nextInt(5);
+		if (prob == 3) { //no reason for 3, just to make a 1/5 probability assuming Rand is uniformally distributed
+			this.board[x][y] = 4;
+		}
+		else {
+			this.board[x][y] = 2;
+		}
+		
 	}
 
 	/*
@@ -294,7 +307,6 @@ public class board {
 		}
 		
 	}
-	
 	private void shiftRight(){
 		int tmp; //for traversing 
 		for (int x = this.board.length-1; x > -1; x--) {
